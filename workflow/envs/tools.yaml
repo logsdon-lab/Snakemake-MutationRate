@@ -1,0 +1,15 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python==3.12
+  - pip
+  - samtools
+  - seqtk
+  - mafft
+  - pip:
+    - biopython
+    - polars
+    - Cython
+    - matplotlib
+    - numpy

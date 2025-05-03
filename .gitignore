@@ -1,0 +1,6 @@
+SG_working
+data
+.snakemake
+benchmarks
+logs
+results

@@ -1,0 +1,35 @@
+include: "rules/common.smk"
+
+
+REFERENCES = get_reference_beds()
+SAMPLES = {qry["name"]: qry for qry in config["samples"]}
+OUTPUT_DIR = config.get("output_dir", "results")
+LOGS_DIR = config.get("log_dir", "logs")
+BENCHMARK_DIR = config.get("benchmark_dir", "benchmarks")
+
+
+# Get extract wildcards. Must match number of regions.
+REFERENCE_REGIONS = defaultdict(list)
+for ref, cfg_ref in REFERENCES.items():
+    for bed_fname, bed in cfg_ref["bed"].items():
+        REFERENCE_REGIONS[ref].append(bed_fname)
+
+
+wildcard_constraints:
+    sm="|".join(SAMPLES.keys()),
+    ref="|".join(REFERENCES.keys()),
+    rgn="|".join(rgn for ref, rgns in REFERENCE_REGIONS.items() for rgn in rgns),
+
+
+include: "rules/align.smk"
+include: "rules/msa.smk"
+include: "rules/divergence.smk"
+include: "rules/mutation_rate.smk"
+
+
+rule all:
+    input:
+        rules.align_all.input,
+        rules.divergence_all.input,
+        rules.mutation_rate_all.input,
+    default_target: True

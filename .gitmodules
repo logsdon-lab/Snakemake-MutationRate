@@ -1,0 +1,4 @@
+[submodule "workflow/scripts/libtn93"]
+	path = workflow/scripts/libtn93
+	url = https://github.com/sdwfrost/libtn93.git
+    ignore = dirty
