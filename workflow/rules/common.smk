@@ -4,7 +4,7 @@ from collections import defaultdict
 from os.path import join, basename, splitext, dirname
 
 
-RGX_CHROM = re.compile(r"(?:chr|hsa)([0-9XY]{1,2})")
+RGX_CHROM = re.compile(config["regex_ref_chrom"])
 
 
 def get_reference_beds():
@@ -36,3 +36,11 @@ def get_chrom(name: str) -> str | None:
         return mtch.group(1)
     else:
         return None
+
+
+def get_window_bed_record(window: str) -> str:
+    # Need to perform right split in case multiple coordinates.
+    # chr1:1000-100000:1-10000
+    chrom, coords = window.rsplit(":", 1)
+    st, end = coords.split("-")
+    return f"{chrom}\\t{st}\\t{end}\\n"

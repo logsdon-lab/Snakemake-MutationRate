@@ -1,0 +1,40 @@
+mem: 100GB
+threads: 8
+output_dir: "results"
+log_dir: "logs"
+benchmarks: "benchmarks"
+reference:
+  - name: chm13
+    path: test/fa/chm13.fa
+    bed:
+    - test/bed/chm13_chr5.bed
+    - test/bed/chm13_chrX.bed
+regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
+regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
+regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"
+samples:
+  - name: hg00733
+    path: test/fa/hg00733.fa
+    bed: test/bed/hg00733.bed
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 0
+  - name: chm1
+    path: test/fa/chm1.fa
+    bed: test/bed/chm1.bed
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 0
+  - name: clint_PTR
+    path: test/fa/clint_PTR.fa
+    bed: test/bed/clint_PTR.bed
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 6000000
+  - name: susie_pab
+    path: test/fa/susie_pab.fa
+    bed: test/bed/susie_pab.bed
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 14000000
+  - name: ag07107_mmu
+    path: test/fa/ag07107_mmu.fa
+    bed: test/bed/ag07107_mmu.bed
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 25000000

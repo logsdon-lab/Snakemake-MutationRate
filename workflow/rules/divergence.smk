@@ -24,8 +24,6 @@ rule split_msa_into_pairs:
         fa_pair=directory(join(OUTPUT_DIR, "divergence", "{ref}", "{window}")),
     conda:
         "../envs/tools.yaml"
-    wildcard_constraints:
-        window=r"[^/]*"
     log:
         join(LOGS_DIR, "split_msa_into_pairs_{ref}_{window}.log"),
     shell:
@@ -42,8 +40,6 @@ rule compute_div_tn93:
         div_tsv=join(OUTPUT_DIR, "divergence", "{ref}", "{window}", "divergence.tsv"),
     log:
         join(LOGS_DIR, "compute_div_tn93_{ref}_{window}.log"),
-    wildcard_constraints:
-        window=r"[^/]*"
     conda:
         "../envs/tools.yaml"
     shell:
@@ -70,8 +66,6 @@ def divergence_times(wc):
         )
 
         for window in wcs.window:
-            if "/" in window:
-                continue
             window_chrom = get_chrom(window)
             if window_chrom and window_chrom == chrom:
                 windows.append(window)

@@ -36,9 +36,11 @@ ALN_CFG = {
     "logs_dir": LOGS_DIR,
     "benchmarks_dir": BENCHMARK_DIR,
     "aln_threads": config["threads"],
+    "aln_mem": config["mem"],
+    "aln_filter_flag": 260,
     # https://github.com/koisland/asm-to-reference-alignment/blob/remove_sm_num_index/config/clint.yaml
     "mm2_opts": {
-        qry: cfg_qry.get("mm2_opts", "-x asm5 --secondary=no -s 25000 -K 8G")
+        qry: cfg_qry.get("mm2_opts", "-x asm20 -Y --eqx -K 8G")
         for qry, cfg_qry in SAMPLES.items()
     },
 }

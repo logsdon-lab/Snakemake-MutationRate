@@ -10,6 +10,7 @@ from matplotlib.colors import ListedColormap, rgb2hex
 
 IN_COLS = ["ref", "ref_st", "ref_end", "qry", "qry_sm", "qry_sm_divergence_time", "mu"]
 
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument(
@@ -23,31 +24,38 @@ def main():
     args = ap.parse_args()
 
     if args.outplot:
-        outplot = args.outplot 
+        outplot = args.outplot
     else:
         fname, _ = os.path.splitext(os.path.basename(args.infile))
         outplot = f"{fname}.pdf"
 
     df = (
-        pl.read_csv(
-            args.infile,
-            has_header=False,
-            separator="\t",
-            new_columns=IN_COLS
-        )
+        pl.read_csv(args.infile, has_header=False, separator="\t", new_columns=IN_COLS)
         .with_columns(
             # TODO: Should be in mutation rate.
-            hap=pl.col("qry").str.extract(r"(mat|pat|haplotype1|haplotype2|hap1|hap2)")
+            hap=pl.col("qry").str.extract(
+                r"(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)"
+            )
         )
         .with_columns(
-            hap=pl.when((pl.col("hap") == "pat") | (pl.col("hap") == "haplotype1") | (pl.col("hap") == "hap1"))
+            hap=pl.when(
+                (pl.col("hap") == "pat")
+                | (pl.col("hap") == "haplotype1")
+                | (pl.col("hap") == "hap1")
+                | (pl.col("hap") == "h1")
+            )
             .then(pl.lit("H1"))
-            .when((pl.col("hap") == "mat") | (pl.col("hap") == "haplotype2") | (pl.col("hap") == "hap2"))
+            .when(
+                (pl.col("hap") == "mat")
+                | (pl.col("hap") == "haplotype2")
+                | (pl.col("hap") == "hap2")
+                | (pl.col("hap") == "h2")
+            )
             .then(pl.lit("H2"))
-            .otherwise(pl.col("hap"))
+            .otherwise(pl.col("hap").fill_null(pl.lit("H1")))
         )
         .with_columns(
-            pos=((pl.col("ref_end") - pl.col("ref_st")) / 2 + pl.col("ref_st")) 
+            pos=((pl.col("ref_end") - pl.col("ref_st")) / 2 + pl.col("ref_st"))
         )
         .sort(by=["qry_sm"])
     )
@@ -64,7 +72,7 @@ def main():
     }
     fig, ax = plt.subplots(figsize=(16, 8))
     ax: matplotlib.axes.Axes
-    
+
     for sm_hap, df_sm in df.group_by(["qry_sm", "hap"], maintain_order=True):
         ax.plot(
             df_sm["pos"],
@@ -74,12 +82,14 @@ def main():
             markeredgecolor="black",
             markeredgewidth=0.1,
             color=val_color_mapping[sm_hap],
-            label="_".join(sm_hap)
+            label="_".join(sm_hap),
         )
 
+    ax.set_ylim(10e-10, 10e-4)
+    ax.set_yscale("log")
     ax.set_ylabel("# of mutations per site per generation")
     ax.set_xlabel("Position (bp)")
-    
+
     fig.legend(loc="center right")
     fig.savefig(outplot, bbox_inches="tight")
 

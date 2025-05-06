@@ -3,4 +3,5 @@ data
 .snakemake
 benchmarks
 logs
-results
+results*
+temp

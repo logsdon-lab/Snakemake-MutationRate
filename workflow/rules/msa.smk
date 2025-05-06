@@ -5,7 +5,7 @@ checkpoint get_aligned_query_regions:
         bam_idx=rules.alignment_idx.output.bam_idx,
         bed=lambda wc: REFERENCES[wc.ref]["bed"][wc.rgn],
     output:
-        outdir=touch(join(OUTPUT_DIR, "fastas", "{ref}", "{rgn}_{sm}.done")),
+        outdir=touch(join(OUTPUT_DIR, "fastas", "msa", "{ref}", "{rgn}_{sm}.done")),
     singularity:
         "docker://eichlerlab/subseqfa:1.0"
     params:
@@ -42,14 +42,17 @@ rule filter_regions:
             sm=SAMPLES,
         ),
         ref_fa=lambda wc: REFERENCES[wc.ref]["path"],
-        fa=join(OUTPUT_DIR, "fastas", "{ref}", "{window}.fa"),
+        fa=join(OUTPUT_DIR, "fastas", "msa", "{ref}", "{window}.fa"),
     output:
-        fai=join(OUTPUT_DIR, "fastas", "{ref}", "{window}.fa.fai"),
-        filtered_fa=join(OUTPUT_DIR, "fastas", "{ref}_filtered", "{window}.fa"),
-        filtered_fai=join(OUTPUT_DIR, "fastas", "{ref}_filtered", "{window}.fa.fai"),
+        fai=join(OUTPUT_DIR, "fastas", "msa", "{ref}", "{window}.fa.fai"),
+        filtered_fa=join(OUTPUT_DIR, "fastas", "msa", "{ref}_filtered", "{window}.fa"),
+        filtered_fai=join(
+            OUTPUT_DIR, "fastas", "msa", "{ref}_filtered", "{window}.fa.fai"
+        ),
     params:
         # Expects: ^chr(?):.*?$ in window name from reference bed file
         chrom=lambda wc: get_chrom(wc.window),
+        window_bed_record=lambda wc: get_window_bed_record(wc.window),
         rgx_hap=config["regex_sm_hap"],
         rgx_chrom=config["regex_sm_chrom"],
         rgx_species=r"'(.*?)~'",
@@ -63,8 +66,7 @@ rule filter_regions:
         {{ samtools faidx {input.fa} || true ;}} &> /dev/null
         seqtk subseq {input.fa} \
             <(python {input.script} -i {output.fai} --rgx_hap {params.rgx_hap} --rgx_chrom {params.rgx_chrom} --rgx_species {params.rgx_species} -c {params.chrom} -l {params.length_range}) > {output.filtered_fa} 2> {log}
-        seqtk subseq {input.ref_fa} \
-            <(echo "{wildcards.window}" | sed -e 's/-/\\t/g' -e 's/:/\\t/g') | \
+        seqtk subseq {input.ref_fa} <(printf "{params.window_bed_record}") | \
             awk '{{
                 if (substr($0, 1, 1)==">") {{
                     fname=substr($0, 2)

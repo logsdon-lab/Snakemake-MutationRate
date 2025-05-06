@@ -19,6 +19,7 @@ wildcard_constraints:
     sm="|".join(SAMPLES.keys()),
     ref="|".join(REFERENCES.keys()),
     rgn="|".join(rgn for ref, rgns in REFERENCE_REGIONS.items() for rgn in rgns),
+    window="[^\/]*",
 
 
 include: "rules/align.smk"
