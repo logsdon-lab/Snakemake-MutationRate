@@ -34,40 +34,35 @@ reference:
 regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
 regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
 regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"
+length_range: [8000, 12000]
 # https://www.nature.com/articles/s41586-025-08816-3
 samples:
   - name: HG00171
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/fasta/HG00171.cen.fasta
-    mm2_opts: -x asm20 --secondary=no -s 2500 -K 8G -t 8
-    # ?
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
     divergence_time: 0
   - name: mGorGor1
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mGorGor1.matpat.v2.fa
     bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mGorGor1.matpat.v2.centromeric_regions.bed
     mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
-    # https://www.nature.com/articles/nature10842
-    divergence_time: 10000000
+    divergence_time: 10700000
   - name: mPanPan1
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mPanPan1.matpat.v1.fa
     bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mPanPan1.matpat.v1.centromeric_regions.bed
     mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
-    # https://www.nature.com/articles/nature11128#rightslink
-    divergence_time: 5000000
+    divergence_time: 6200000
   - name: mPanTro3
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mPanTro3.hap1hap2.v1.fa
     bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mPanTro3.hap1hap2.v1.centromeric_regions.bed
     mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
-    # https://www.pnas.org/doi/10.1073/pnas.1211740109#:~:text=We%20date%20the%20human%E2%80%93chimpanzee%20split%20to%20at,and%20modern%20humans%20to%20400%2C000%E2%80%93800%2C000%20y%20ago.&text=We%20estimate%20the%20split%20time%20between%20the,range%20from%204%20to%206%20million%20years.
-    divergence_time: 6400000
+    divergence_time: 6200000
   - name: mPonAbe1
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mPonAbe1.hap1hap2.v3.fa
     bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mPonAbe1.hap1hap2.v3.centromeric_regions.bed
     mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
-    # https://www.nature.com/articles/s41586-024-07278-3#Sec8
-    divergence_time: 13000000
+    divergence_time: 19100000
   - name: mPonPyg2
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mPonPyg2.hap1hap2.v3.fa
     bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mPonPyg2.hap1hap2.v3.centromeric_regions.bed
     mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
-    # https://www.nature.com/articles/s41586-024-07278-3#Sec8
-    divergence_time: 13000000
+    divergence_time: 19100000

@@ -33,7 +33,7 @@ def main():
         "-l",
         "--length",
         type=lambda x: ast.literal_eval(x),
-        default=(5_000, 20_000),
+        default=(8_000, 12_000),
         help="Length range of sequence.",
     )
     ap.add_argument(

@@ -56,7 +56,7 @@ rule filter_regions:
         rgx_hap=config["regex_sm_hap"],
         rgx_chrom=config["regex_sm_chrom"],
         rgx_species=r"'(.*?)~'",
-        length_range="'(5_000,20_000)'",
+        length_range=f"'{tuple(config["length_range"])}'",
     conda:
         "../envs/tools.yaml"
     log:
@@ -93,5 +93,5 @@ rule msa:
         join(LOGS_DIR, "msa_{ref}_{window}.log"),
     shell:
         """
-        mafft --maxiterate 1000 --localpair --thread {threads} {input.fa} > {output.fa} 2> {log}
+        mafft --maxiterate 1000 --globalpair --thread {threads} {input.fa} > {output.fa} 2> {log}
         """
