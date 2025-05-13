@@ -9,7 +9,7 @@ def extract_sm_seq_cmd(wc, input, output):
     else:
         raise ValueError(f"Sample {wc.sm} bedfile is not valid type.")
 
-    return f"seqtk subseq {input.fa} {bed_cmd}"
+    return f"seqtk subseq {input.fa} {bed_cmd} > {output.fa}"
 
 
 rule extract_sm_seq:
@@ -24,7 +24,7 @@ rule extract_sm_seq:
         "../envs/tools.yaml"
     shell:
         """
-        {params.cmd} > {output}
+        {params.cmd}
         """
 
 
