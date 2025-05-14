@@ -33,332 +33,333 @@ reference:
   - /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/windows/CHM13_chrY.bed
   name: CHM13
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/T2T-CHM13v2.fasta
+  annotations: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/CHM13_repeat_annotation.bed
 regex_ref_chrom: (?:chr|hsa|cen)([0-9XY]{1,2})
 regex_sm_chrom: '''_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'''
 regex_sm_hap: '''(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'''
 samples:
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01457
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01457.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03456
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03456.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG04036
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG04036.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG04217
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG04217.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA12329
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA12329.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00864
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00864.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00096
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00096.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00268
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00268.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03371
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03371.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA20509
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA20509.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA20355
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA20355.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19650
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19650.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19331
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19331.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00514
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00514.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19036
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19036.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00731
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00731.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19836
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19836.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02769
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02769.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02666
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02666.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02492
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02492.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19240
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19240.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19317
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19317.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00512
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00512.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA21487
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA21487.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01596
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01596.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01352
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01352.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19434
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19434.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01114
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01114.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03732
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03732.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19239
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19239.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02554
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02554.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03452
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03452.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02018
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02018.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00513
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00513.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19347
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19347.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02587
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02587.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03248
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03248.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19384
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19384.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03683
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03683.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00358
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00358.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01890
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01890.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19129
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19129.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19705
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19705.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02818
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02818.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA20847
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA20847.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA18534
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA18534.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03520
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03520.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03009
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03009.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01505
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01505.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00733
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00733.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA24385
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA24385.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03807
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03807.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02953
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02953.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG03065
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG03065.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA18939
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA18939.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19238
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19238.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02106
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02106.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02059
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02059.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02282
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02282.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG01573
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG01573.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG02011
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG02011.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00171
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00171.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA18989
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA18989.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: HG00732
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/HG00732.cen.fasta
 - divergence_time: 0
-  color: "#49B793"
+  color: "#808080"
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: NA19983
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/cens/NA19983.cen.fasta
@@ -374,7 +375,7 @@ samples:
   mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
   name: mPanPan1
   shape: "^"
-  color: "#49B793"
+  color: "#808080"
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/asm_primates/mPanPan1.matpat.v1.fa
 - bed: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/regions_primates/mPanTro3.hap1hap2.v1.centromeric_regions.bed
   divergence_time: 6200000
