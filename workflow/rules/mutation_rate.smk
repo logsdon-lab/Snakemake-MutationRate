@@ -43,14 +43,21 @@ rule plot_mutation_rate:
     input:
         script="workflow/scripts/plot_mutation_rate.py",
         mut_tsv=rules.calculate_mutation_rate.output,
-        ref_annot_bed=lambda wc: REFERENCES[wc.ref].get("annotations", []),
+        ref_cmp_bed=lambda wc: REFERENCES[wc.ref].get("bed_comparison", []),
+        ref_annot_bed=lambda wc: REFERENCES[wc.ref].get("bed_annotations", []),
     output:
         mut_plt=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}.png"),
+        mut_rate=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}_mut.tsv"),
     params:
         sample_color=COLORS,
         sample_shape=SHAPES,
+        ref_cmp_bed=lambda wc, input: (
+            f"--ref_cmp_bed <(awk -v OFS='\\t' '$1 == \"{wc.rgn}\"' {input.ref_cmp_bed})"
+            if input.ref_cmp_bed
+            else ""
+        ),
         ref_annot_bed=lambda wc, input: (
-            f"-r <(grep '{wc.rgn}' {input.ref_annot_bed})"
+            f"-r <(awk -v OFS='\\t' '$1 == \"{wc.rgn}\"' {input.ref_annot_bed})"
             if input.ref_annot_bed
             else ""
         ),
@@ -62,10 +69,11 @@ rule plot_mutation_rate:
         """
         python {input.script} \
         -i {input.mut_tsv} \
-        -o {output} \
+        -o {output.mut_plt} \
         -c '{params.sample_color}' \
         -s '{params.sample_shape}' \
-        {params.ref_annot_bed} 2> {log}
+        {params.ref_annot_bed} \
+        {params.ref_cmp_bed} > {output.mut_rate} 2> {log}
         """
 
 

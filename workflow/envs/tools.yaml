@@ -13,3 +13,4 @@ dependencies:
     - Cython
     - matplotlib
     - numpy
+    - intervaltree

@@ -33,7 +33,8 @@ reference:
   - /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/windows/CHM13_chrY.bed
   name: CHM13
   path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/T2T-CHM13v2.fasta
-  annotations: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/CHM13_repeat_annotation.bed
+  bed_comparison: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/chm13_v2.0_hor_arrays.bed
+  bed_annotations: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/CHM13_repeat_annotation.bed
 regex_ref_chrom: (?:chr|hsa|cen)([0-9XY]{1,2})
 regex_sm_chrom: '''_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'''
 regex_sm_hap: '''(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'''
