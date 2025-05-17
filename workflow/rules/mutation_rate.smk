@@ -77,6 +77,32 @@ rule plot_mutation_rate:
         """
 
 
+rule aggregate_mutation_rate:
+    input:
+        lambda wc: expand(
+            rules.plot_mutation_rate.output.mut_rate,
+            ref=wc.ref,
+            rgn=REFERENCE_REGIONS[wc.ref],
+        ),
+    output:
+        mut_rate=join(OUTPUT_DIR, "mutation_rate", "{ref}", "all_mut.tsv"),
+    conda:
+        "../envs/tools.yaml"
+    log:
+        join(LOGS_DIR, "aggregate_mutation_rate_{ref}.log"),
+    shell:
+        """
+        {{ awk -v OFS="\\t" '{{
+            if ($1 != "mu_ref") {{
+                sub(".*/", "", FILENAME);
+                sub("_mut.tsv", "", FILENAME);
+                print FILENAME, $0
+            }}
+        }}' {input} | \
+        sort -k 4,4n ;}} > {output}
+        """
+
+
 rule mutation_rate_all:
     input:
         [
@@ -90,6 +116,10 @@ rule mutation_rate_all:
                     rules.plot_mutation_rate.output,
                     ref=ref,
                     rgn=REFERENCE_REGIONS[ref],
+                ),
+                expand(
+                    rules.aggregate_mutation_rate.output,
+                    ref=ref,
                 ),
             )
             for ref in REFERENCE_REGIONS.keys()

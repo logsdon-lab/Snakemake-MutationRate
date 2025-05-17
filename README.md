@@ -2,6 +2,8 @@
 Calculate mutation rate of query regions against a reference region.
 * See https://www.nature.com/articles/s41586-024-07278-3#Sec6.
 
+![](docs/images/chm13_to_hgsvc_chrX.png)
+
 ```bash
 git clone https://github.com/logsdon-lab/Snakemake-MutationRate.git --recurse-submodules
 ```
@@ -26,6 +28,10 @@ reference:
     # Can be created from a region bedfile via, bedtools makewindows -w "${window_size}" -b "${bedfile}"
     bed:
       - reference_chr1.bed
+    # Calculate rate for this region relative to everything else not in bed.
+    bed_comparison: reference.bed
+    # BED9 annotations to add to plot.
+    bed_annotations: annotation.bed
 # Regular expression patterns within fasta headers to find haplotype and matching chromosome.
 # Used to group and filter alignments by exact match.
 regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
