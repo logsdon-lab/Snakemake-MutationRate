@@ -67,13 +67,19 @@ def main():
         type=str,
     )
     ap.add_argument("-o", "--outplot", help="Output plot", default=None, type=str)
+    ap.add_argument(
+        "--legend_ncols",
+        help="Number of columns for legend elements.",
+        default=2,
+        type=str,
+    )
     args = ap.parse_args()
 
     if args.outplot:
         outplot = args.outplot
     else:
         fname, _ = os.path.splitext(os.path.basename(args.infile))
-        outplot = f"{fname}.pdf"
+        outplot = f"{fname}.png"
 
     if args.sample_colors:
         sample_colors = json.loads(args.sample_colors)
@@ -201,11 +207,13 @@ def main():
 
     if other_muts:
         other_mut = statistics.median(other_muts)
+        if other_mut == 0:
+            other_mut = statistics.mean(other_muts)
         ax.axhline(other_mut, linestyle="dotted", color="black")
     else:
         other_mut = 1.0
 
-    rel_mut_rate = round((median_mut / other_mut) * 100.0)
+    rel_mut_rate = round(median_mut / other_mut)
     print("\t".join(OUT_COLS), file=args.outfile)
     print(f"{median_mut}\t{other_mut}\t{rel_mut_rate}", file=args.outfile)
 
@@ -278,7 +286,7 @@ def main():
             loc="center",
             labels=legend_elems.keys(),
             handles=legend_elems.values(),
-            ncols=10,
+            ncols=args.legend_ncols,
         )
 
     handles, labels = ax.get_legend_handles_labels()

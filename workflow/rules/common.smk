@@ -1,5 +1,6 @@
 import re
 import json
+import subprocess
 from collections import defaultdict
 from os.path import join, basename, splitext, dirname
 
@@ -12,10 +13,24 @@ def get_reference_beds():
     for ref in config["reference"]:
         cfg_ref = {}
         cfg_ref["path"] = ref["path"]
-        cfg_ref["bed_annotations"] = ref.get("bed_annotations")
-        cfg_ref["bed_comparison"] = ref.get("bed_comparison")
+        cfg_ref["bed_annotations"] = ref.get("bed_annotations", [])
+        cfg_ref["bed_comparison"] = ref.get("bed_comparison", [])
         if isinstance(ref["bed"], str):
-            beds = [ref["bed"]]
+            bed = ref["bed"]
+            output = subprocess.run(
+                ["bedtools", "makewindows", "-b", bed, "-w", str(ref["window_size"])],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            name, _ = splitext(basename(bed))
+            tmp_bed = f"/tmp/{name}.bed"
+            # TODO: Split into regions
+            with open(tmp_bed, "wt") as fh:
+                for line in output.stdout.split("\n"):
+                    print(line, file=fh)
+
+            beds = [tmp_bed]
         elif isinstance(ref["bed"], list):
             beds = ref["bed"]
         else:

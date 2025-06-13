@@ -1,4 +1,4 @@
-benchmarks: benchmarks
+benchmark_dir: benchmarks
 length_range:
 - 8000
 - 12000

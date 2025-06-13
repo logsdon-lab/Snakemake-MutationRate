@@ -53,9 +53,10 @@ samples:
 
 ## Usage
 ```bash
-# # Load singularity
+# # Load singularity and bedtools
 # module load singularity
 which singularity
+which bedtools
 
 # Rerun mutation rate estimation.
 # https://www.nature.com/articles/s41586-024-07278-3#Sec6

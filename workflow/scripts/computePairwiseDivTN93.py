@@ -17,7 +17,10 @@ if __name__ == "__main__":
     files = args.fa_msa if args.fa_msa else []
     for file in files:
         pair_1, _, pair_2 = os.path.splitext(os.path.basename(file))[0].partition("+")
-        alignment = AlignIO.read(file, "fasta")
+        try:
+            alignment = AlignIO.read(file, "fasta")
+        except ValueError:
+            continue
         alignment1 = str(alignment[0].seq.upper())
         alignment2 = str(alignment[1].seq.upper())
 

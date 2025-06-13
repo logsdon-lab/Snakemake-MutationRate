@@ -2,7 +2,7 @@ mem: 100GB
 threads: 8
 output_dir: "results"
 log_dir: "logs"
-benchmarks: "benchmarks"
+benchmark_dir: "benchmarks"
 reference:
   - name: CHM13
     path: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/data/T2T-CHM13v2.fasta

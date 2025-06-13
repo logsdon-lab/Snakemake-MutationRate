@@ -1,5 +1,5 @@
 DIVERGENCE_TIMES = json.dumps(
-    {sample: cfg["divergence_time"] for sample, cfg in SAMPLES.items()}
+    {sample: cfg.get("divergence_time") for sample, cfg in SAMPLES.items()}
 )
 
 COLORS = json.dumps(
@@ -25,17 +25,28 @@ rule calculate_mutation_rate:
     input:
         script="workflow/scripts/calculate_mutation_rate.py",
         div=rules.aggregate_divergence_times.output,
+        ref_sm_ctg_div_times=(
+            config["reference_sample_ctg_divergence_times"]
+            if config.get("reference_sample_ctg_divergence_times")
+            else []
+        ),
     output:
         mut_tsv=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}.tsv"),
     params:
         sample_divergence_times=DIVERGENCE_TIMES,
+        ref_sm_ctg_div_times=lambda wc, input: (
+            f"--ref_sm_ctg_div_times {input.ref_sm_ctg_div_times}"
+            if input.ref_sm_ctg_div_times
+            else ""
+        ),
     conda:
         "../envs/tools.yaml"
     log:
         join(LOGS_DIR, "calculate_mutation_rate_{ref}_{rgn}.log"),
     shell:
         """
-        python {input.script} -i {input.div} -d '{params.sample_divergence_times}' > {output} 2> {log}
+        python {input.script} -i {input.div} -d '{params.sample_divergence_times}' \
+        {params.ref_sm_ctg_div_times} > {output} 2> {log}
         """
 
 
@@ -52,14 +63,10 @@ rule plot_mutation_rate:
         sample_color=COLORS,
         sample_shape=SHAPES,
         ref_cmp_bed=lambda wc, input: (
-            f"--ref_cmp_bed <(awk -v OFS='\\t' '$1 == \"{wc.rgn}\"' {input.ref_cmp_bed})"
-            if input.ref_cmp_bed
-            else ""
+            f"--ref_cmp_bed {input.ref_cmp_bed}" if input.ref_cmp_bed else ""
         ),
         ref_annot_bed=lambda wc, input: (
-            f"-r <(awk -v OFS='\\t' '$1 == \"{wc.rgn}\"' {input.ref_annot_bed})"
-            if input.ref_annot_bed
-            else ""
+            f"-r {input.ref_annot_bed}" if input.ref_annot_bed else ""
         ),
     conda:
         "../envs/tools.yaml"

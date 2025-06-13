@@ -16,8 +16,12 @@ checkpoint get_aligned_query_regions:
         """
         mkdir -p "{params.outdir}"
         while IFS='' read -r line; do
+            if [[ $line == "" ]]; then
+                continue
+            fi
             window=$(echo $line | awk '{{print $1":"$2"-"$3}}')
             output_fa="{params.outdir}/${{window}}.fa"
+            echo "Getting query sequence in reference window: ${{window}}" >> {log}
             {{ subseqfa -b -v -r "${{window}}" {input.bam} | \
                 awk '{{
                     if (substr($0, 1, 1)==">") {{

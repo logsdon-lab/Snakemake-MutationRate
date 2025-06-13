@@ -10,7 +10,7 @@ rule compile_tn93:
         join(LOGS_DIR, "compile_tn93.log"),
     shell:
         """
-        pip install {input.src} &> {log}
+        {{ pip install {input.src} || true ;}}  &> {log}
         """
 
 
@@ -84,7 +84,9 @@ rule aggregate_divergence_times:
         fa=join(OUTPUT_DIR, "divergence", "{ref}", "{rgn}.tsv"),
     shell:
         """
-        cat {input} > {output}
+        for file in {input}; do
+            cat $file >> {output}
+        done
         """
 
 

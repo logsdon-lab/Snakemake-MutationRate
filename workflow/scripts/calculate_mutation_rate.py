@@ -6,6 +6,7 @@ import polars as pl
 
 IN_COLS = ["ref", "qry", "gc_ref", "gc_qry", "gc", "tn93_div"]
 OUT_COLS = ["ref", "ref_st", "ref_end", "qry", "qry_sm", "qry_sm_divergence_time", "mu"]
+REF_SM_DIV_TIMES_COLS = ["ref_chrom", "qry_chrom", "repl_time"]
 
 
 def compute_mu_div(col_tn93_div: str, col_div_time: str, Ne: int, gen: int) -> pl.Expr:
@@ -45,6 +46,12 @@ def main():
         type=int,
     )
     ap.add_argument(
+        "--ref_sm_ctg_div_times",
+        default=None,
+        help=f"TSV file of generation times of sample relative to reference for each contig. Overrides divergence times. Format: {REF_SM_DIV_TIMES_COLS}",
+        type=str,
+    )
+    ap.add_argument(
         "-o",
         "--outfile",
         help=f"Bedfile with mutation rate per ref-qry pair. Format: {OUT_COLS}",
@@ -62,6 +69,16 @@ def main():
     else:
         divergence_times = json.loads(args.divergence_times)
 
+    if args.ref_sm_ctg_div_times:
+        df_ref_sm_ctg_div_times = pl.read_csv(
+            args.ref_sm_ctg_div_times,
+            has_header=False,
+            separator="\t",
+            new_columns=REF_SM_DIV_TIMES_COLS,
+        )
+    else:
+        df_ref_sm_ctg_div_times = pl.DataFrame(schema=REF_SM_DIV_TIMES_COLS)
+
     df_divergence_times = pl.DataFrame(divergence_times).unpivot(
         variable_name="sm", value_name="divergence_time"
     )
@@ -71,17 +88,32 @@ def main():
         .with_columns(
             # Expects ^{sm}~{chrom}:{st}-{end}$
             mtch_ref=pl.col("ref").str.extract_groups(
-                r"^(?<ref_sm>.*?)~(?<ref_chrom>.*?):(?<ref_st>\d+)-(?<ref_end>\d+)$"
+                r"^(?<ref_sm>.*?)~(?<ref_chrom>.*?):.*?(?<ref_st>\d+)-(?<ref_end>\d+)$"
             ),
-            qry_sm=pl.col("qry").str.extract(r"^(.*?)~"),
+            mtch_qry=pl.col("qry").str.extract_groups(
+                r"^(?<qry_sm>.*?)~(?<qry_chrom>.*?):.*?(?<qry_st>\d+)-(?<qry_end>\d+)$"
+            ),
         )
         .unnest("mtch_ref")
+        .unnest("mtch_qry")
         .join(
             df_divergence_times.lazy(), left_on=["qry_sm"], right_on=["sm"], how="left"
         )
         .rename({"divergence_time": "qry_sm_divergence_time"})
         .collect()
     )
+    # Replace divergence times if provided.
+    if args.ref_sm_ctg_div_times:
+        df = (
+            df.join(df_ref_sm_ctg_div_times, on=["ref_chrom", "qry_chrom"], how="left")
+            .with_columns(
+                qry_sm_divergence_time=pl.when(~pl.col("repl_time").is_null())
+                .then(pl.col("repl_time"))
+                .otherwise(pl.col("qry_sm_divergence_time"))
+            )
+            .drop_nulls()
+        )
+
     df = df.with_columns(
         mu=pl.when(pl.col("qry_sm_divergence_time") == 0)
         .then(compute_mu_poly("tn93_div", Ne=Ne))

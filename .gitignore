@@ -2,7 +2,8 @@ SG_working
 data
 .snakemake
 benchmarks
-logs
+logs*
 results*
 temp
 exp
+png
