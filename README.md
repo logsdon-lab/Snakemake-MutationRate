@@ -54,10 +54,10 @@ samples:
 
 ## Usage
 ```bash
-# # Load singularity or install it.
+# Load singularity or install it.
 which singularity
 
-conda env create --name mut_rate -f env.yaml\
+conda env create --name mut_rate -f env.yaml
 conda activate mut_rate
 
 # Rerun mutation rate estimation.
