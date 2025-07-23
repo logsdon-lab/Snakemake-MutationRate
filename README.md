@@ -2,7 +2,7 @@
 Calculate mutation rate of query regions against a reference region.
 * See https://www.nature.com/articles/s41586-024-07278-3#Sec6.
 
-![](docs/images/chm13_to_hgsvc_chrX.png)
+![](docs/images/chr1@6.png)
 
 ```bash
 git clone https://github.com/logsdon-lab/Snakemake-MutationRate.git --recurse-submodules
@@ -30,8 +30,9 @@ reference:
       - reference_chr1.bed
     # Calculate rate for this region relative to everything else not in bed.
     bed_comparison: reference.bed
-    # BED9 annotations to add to plot.
-    bed_annotations: annotation.bed
+    # Reference region cenplot format configuration
+    # The mutation rate plot is added as the final track with legend elements for each track added in relative order.
+    plot_format: annotation.toml
 # Regular expression patterns within fasta headers to find haplotype and matching chromosome.
 # Used to group and filter alignments by exact match.
 regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
@@ -53,10 +54,11 @@ samples:
 
 ## Usage
 ```bash
-# # Load singularity and bedtools
-# module load singularity
+# # Load singularity or install it.
 which singularity
-which bedtools
+
+conda env create --name mut_rate -f env.yaml\
+conda activate mut_rate
 
 # Rerun mutation rate estimation.
 # https://www.nature.com/articles/s41586-024-07278-3#Sec6

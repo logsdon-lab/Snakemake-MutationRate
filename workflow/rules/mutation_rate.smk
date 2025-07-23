@@ -2,21 +2,14 @@ DIVERGENCE_TIMES = json.dumps(
     {sample: cfg.get("divergence_time") for sample, cfg in SAMPLES.items()}
 )
 
-COLORS = json.dumps(
+PLOT_OPTS = json.dumps(
     {
-        sample: cfg["color"]
+        sample: {
+            "color": cfg.get("color"),
+            "shape": cfg.get("shape"),
+            "display_name": cfg.get("display_name"),
+        }
         for sample, cfg in SAMPLES.items()
-        # Random color if none.
-        if cfg.get("color")
-    }
-)
-
-SHAPES = json.dumps(
-    {
-        sample: cfg["shape"]
-        for sample, cfg in SAMPLES.items()
-        # Circle if none.
-        if cfg.get("shape")
     }
 )
 
@@ -55,18 +48,19 @@ rule plot_mutation_rate:
         script="workflow/scripts/plot_mutation_rate.py",
         mut_tsv=rules.calculate_mutation_rate.output,
         ref_cmp_bed=lambda wc: REFERENCES[wc.ref].get("bed_comparison", []),
-        ref_annot_bed=lambda wc: REFERENCES[wc.ref].get("bed_annotations", []),
+        plot_format=lambda wc: REFERENCES[wc.ref].get("plot_format", []),
     output:
         mut_plt=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}.png"),
+        mut_plt_pdf=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}.pdf"),
         mut_rate=join(OUTPUT_DIR, "mutation_rate", "{ref}", "{rgn}_mut.tsv"),
     params:
-        sample_color=COLORS,
-        sample_shape=SHAPES,
+        plot_opts=PLOT_OPTS,
+        plot_format=lambda wc, input: (
+            f"-t {input.plot_format}" if input.plot_format else ""
+        ),
+        output_prefix=lambda wc, output: splitext(output.mut_plt)[0],
         ref_cmp_bed=lambda wc, input: (
             f"--ref_cmp_bed {input.ref_cmp_bed}" if input.ref_cmp_bed else ""
-        ),
-        ref_annot_bed=lambda wc, input: (
-            f"-r {input.ref_annot_bed}" if input.ref_annot_bed else ""
         ),
     conda:
         "../envs/tools.yaml"
@@ -76,10 +70,9 @@ rule plot_mutation_rate:
         """
         python {input.script} \
         -i {input.mut_tsv} \
-        -o {output.mut_plt} \
-        -c '{params.sample_color}' \
-        -s '{params.sample_shape}' \
-        {params.ref_annot_bed} \
+        -o {params.output_prefix} \
+        -s '{params.plot_opts}' \
+        {params.plot_format} \
         {params.ref_cmp_bed} > {output.mut_rate} 2> {log}
         """
 

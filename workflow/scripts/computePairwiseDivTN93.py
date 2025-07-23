@@ -1,6 +1,7 @@
 import os
+import sys
 import argparse
-from Bio import AlignIO
+import pyfaidx
 from tn93 import tn93
 
 
@@ -18,11 +19,14 @@ if __name__ == "__main__":
     for file in files:
         pair_1, _, pair_2 = os.path.splitext(os.path.basename(file))[0].partition("+")
         try:
-            alignment = AlignIO.read(file, "fasta")
-        except ValueError:
+            alignment = pyfaidx.Fasta(file)
+        except Exception as err:
+            print(err, file=sys.stderr)
             continue
-        alignment1 = str(alignment[0].seq.upper())
-        alignment2 = str(alignment[1].seq.upper())
+
+        record_names = list(alignment.records.items())
+        alignment1 = str(record_names[0][1]).upper()
+        alignment2 = str(record_names[1][1]).upper()
 
         propGC_seq1 = calculate_gc_prop(alignment1)
         propGC_seq2 = calculate_gc_prop(alignment2)

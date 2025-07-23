@@ -6,12 +6,14 @@ dependencies:
   - pip
   - samtools
   - seqtk
+  - seqkit
   - mafft
   - gcc
   - pip:
-    - biopython
+    - pyfaidx
     - polars
     - Cython
     - matplotlib
     - numpy
     - intervaltree
+    - cenplot

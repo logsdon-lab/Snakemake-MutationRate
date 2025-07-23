@@ -1,0 +1,19 @@
+[settings]
+format = "png"
+transparent = true
+dim = [18.0, 8.0]
+axis_h_pad = 0.1
+dpi = 600
+
+[[tracks]]
+position = "relative"
+type = "label"
+proportion = 0.05
+path = "data/CHM13_repeat_annotation.bed"
+options = { legend = false, hide_x = true }
+
+# Mutation rate plot is added to end here.
+
+# Legend elements for each added track are added here.
+
+# Mutation rate legend will go here.

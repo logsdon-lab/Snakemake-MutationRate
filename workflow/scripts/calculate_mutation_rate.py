@@ -5,7 +5,17 @@ import argparse
 import polars as pl
 
 IN_COLS = ["ref", "qry", "gc_ref", "gc_qry", "gc", "tn93_div"]
-OUT_COLS = ["ref", "ref_st", "ref_end", "qry", "qry_sm", "qry_sm_divergence_time", "mu"]
+OUT_COLS = [
+    "ref_chrom",
+    "ref_st",
+    "ref_end",
+    "mu",
+    "qry_chrom",
+    "qry_st",
+    "qry_end",
+    "ref_sm",
+    "qry_sm",
+]
 REF_SM_DIV_TIMES_COLS = ["ref_chrom", "qry_chrom", "repl_time"]
 
 
@@ -119,7 +129,8 @@ def main():
         .then(compute_mu_poly("tn93_div", Ne=Ne))
         .otherwise(compute_mu_div("tn93_div", "qry_sm_divergence_time", Ne=Ne, gen=gen))
     ).select(OUT_COLS)
-    df.write_csv(args.outfile, separator="\t", include_header=False)
+
+    df.write_csv(args.outfile, separator="\t", include_header=True)
 
 
 if __name__ == "__main__":

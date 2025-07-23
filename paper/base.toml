@@ -1,0 +1,36 @@
+[settings]
+format = ["png", "pdf"]
+transparent = true
+dim = [18.0, 8.0]
+axis_h_pad = 0.1
+dpi = 600
+
+[[tracks]]
+title = "CDR"
+position = "relative"
+type = "label"
+proportion = 0.01
+path = "cdr"
+options = { legend = false, hide_x = true }
+
+[[tracks]]
+title = "Centromere structure"
+position = "relative"
+type = "label"
+proportion = 0.05
+path = "rm"
+options = { legend = false, hide_x = true }
+
+[[tracks]]
+position = "overlap"
+type = "hor"
+path = "hor"
+options = { legend = false, hide_x = true, sort_order = "descending" }
+
+[[tracks]]
+title = "Sequence identity (%)"
+position = "relative"
+type = "label"
+proportion = 0.05
+path = "mdp"
+options = { legend = false, hide_x = true }

@@ -31,6 +31,7 @@ reference:
       - /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/windows/CHM13_chr22.bed
       - /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/windows/CHM13_chrX.bed
       - /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/SG_working/windows/CHM13_chrY.bed
+    plot_format: /project/logsdon_shared/projects/HGSVC3/Snakemake-MutationRate/config/base.toml
 regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
 regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
 regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"

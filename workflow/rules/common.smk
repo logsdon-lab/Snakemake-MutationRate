@@ -13,7 +13,7 @@ def get_reference_beds():
     for ref in config["reference"]:
         cfg_ref = {}
         cfg_ref["path"] = ref["path"]
-        cfg_ref["bed_annotations"] = ref.get("bed_annotations", [])
+        cfg_ref["plot_format"] = ref.get("plot_format", [])
         cfg_ref["bed_comparison"] = ref.get("bed_comparison", [])
         if isinstance(ref["bed"], str):
             bed = ref["bed"]

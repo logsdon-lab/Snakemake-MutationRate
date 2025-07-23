@@ -68,8 +68,10 @@ rule filter_regions:
     shell:
         """
         {{ samtools faidx {input.fa} || true ;}} &> /dev/null
+        # Subset and filter regions so only unique mappings.
         seqtk subseq {input.fa} \
             <(python {input.script} -i {output.fai} --rgx_hap {params.rgx_hap} --rgx_chrom {params.rgx_chrom} --rgx_species {params.rgx_species} -c {params.chrom} -l {params.length_range}) > {output.filtered_fa} 2> {log}
+        # Add reference back.
         seqtk subseq {input.ref_fa} <(printf "{params.window_bed_record}") | \
             awk '{{
                 if (substr($0, 1, 1)==">") {{
@@ -78,6 +80,9 @@ rule filter_regions:
                 }}
                 print $0
             }}'>> {output.filtered_fa} 2> {log}
+        # Remove any remaining duplicates if any.
+        seqkit rmdup {output.filtered_fa} > {output.filtered_fa}.tmp
+        mv {output.filtered_fa}.tmp {output.filtered_fa}
         {{ samtools faidx {output.filtered_fa} || true ;}} &> /dev/null
         touch {output}
         """

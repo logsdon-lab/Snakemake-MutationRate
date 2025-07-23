@@ -1,0 +1,20 @@
+mem: 100GB
+threads: 8
+output_dir: "results"
+log_dir: "logs"
+benchmark_dir: "benchmarks"
+reference:
+  - name: ""
+    path: ""
+    bed: []
+    window_size: 10000
+regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
+regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
+regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"
+length_range: [8000, 12000]
+# https://www.nature.com/articles/s41586-025-08816-3
+samples:
+  - name: ""
+    path: ""
+    mm2_opts: -x asm20 -K 8G --eqx -Y -t 8 -r 500000,500000
+    divergence_time: 0

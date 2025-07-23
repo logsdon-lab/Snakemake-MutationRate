@@ -69,12 +69,17 @@ def divergence_times(wc):
             window_chrom = get_chrom(window)
             if window_chrom and window_chrom == chrom:
                 windows.append(window)
-
-    return expand(
+    results = expand(
         rules.compute_div_tn93.output,
         ref=wc.ref,
         window=windows,
     )
+    if not results:
+        raise ValueError(
+            "No extracted regions for checkpoint get_aligned_query_regions."
+        )
+
+    return results
 
 
 rule aggregate_divergence_times:
