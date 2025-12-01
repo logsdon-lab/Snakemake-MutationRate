@@ -124,11 +124,17 @@ def main():
             .drop_nulls()
         )
 
-    df = df.with_columns(
-        mu=pl.when(pl.col("qry_sm_divergence_time") == 0)
-        .then(compute_mu_poly("tn93_div", Ne=Ne))
-        .otherwise(compute_mu_div("tn93_div", "qry_sm_divergence_time", Ne=Ne, gen=gen))
-    ).select(OUT_COLS)
+    df = (
+        df.with_columns(
+            mu=pl.when(pl.col("qry_sm_divergence_time") == 0)
+            .then(compute_mu_poly("tn93_div", Ne=Ne))
+            .otherwise(
+                compute_mu_div("tn93_div", "qry_sm_divergence_time", Ne=Ne, gen=gen)
+            )
+        )
+        .select(OUT_COLS)
+        .unique()
+    )
 
     df.write_csv(args.outfile, separator="\t", include_header=True)
 

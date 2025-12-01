@@ -15,6 +15,7 @@ def get_reference_beds():
         cfg_ref["path"] = ref["path"]
         cfg_ref["plot_format"] = ref.get("plot_format", [])
         cfg_ref["bed_comparison"] = ref.get("bed_comparison", [])
+        cfg_ref["bed_other_ignore"] = ref.get("bed_other_ignore", [])
         if isinstance(ref["bed"], str):
             bed = ref["bed"]
             output = subprocess.run(

@@ -2,7 +2,7 @@ import os
 
 
 INPUT_CONFIG_DIR = config["input_dir"]
-CFG_GLOB = os.path.join(INPUT_CONFIG_DIR, "config_{clade}.yaml")
+CFG_GLOB = os.path.join(INPUT_CONFIG_DIR, "{clade}.yaml")
 WCS = glob_wildcards(CFG_GLOB)
 
 
@@ -18,7 +18,7 @@ rule run_mutation_rate:
     threads: 1
     shell:
         """
-        snakemake -pk --configfile {input.cfg} -j {resources.jobs} --workflow-profile workflow/profiles/lpc &> {log}
+        snakemake -pk --configfile {input.cfg} -j {resources.jobs} --workflow-profile workflow/profiles/lpc --config display_order="[EUR, EAS, AMR, AFR, SAS]" &> {log}
         """
 
 

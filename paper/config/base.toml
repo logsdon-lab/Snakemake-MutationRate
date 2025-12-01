@@ -25,12 +25,12 @@ options = { legend = false, hide_x = true }
 position = "overlap"
 type = "hor"
 path = "hor"
-options = { legend = false, hide_x = true, sort_order = "descending" }
+options = { legend = false, hide_x = true, sort_order = "descending", live_only = false }
 
 [[tracks]]
 title = "Sequence identity (%)"
 position = "relative"
-type = "label"
+type = "localselfident"
 proportion = 0.05
 path = "mdp"
 options = { legend = false, hide_x = true }

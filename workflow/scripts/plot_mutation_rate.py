@@ -2,11 +2,9 @@ import os
 import sys
 import json
 import argparse
-import statistics
 import matplotlib
 import matplotlib.axes
 import polars as pl
-import intervaltree as it
 
 from cenplot import (
     LegendTrackSettings,
@@ -15,8 +13,8 @@ from cenplot import (
     TrackType,
     LineTrackSettings,
     PlotSettings,
-    read_one_cen_tracks,
-    plot_one_cen,
+    read_tracks,
+    plot_tracks,
 )
 
 
@@ -34,7 +32,7 @@ def main():
     )
     ap.add_argument(
         "--outfile",
-        help=f"BED file of mutation rates. Format: {OUT_COLS}",
+        help=f"BED file of summary mutation rates. Format: {OUT_COLS}",
         default=sys.stdout,
         type=argparse.FileType("wt"),
     )
@@ -52,10 +50,10 @@ def main():
         type=str,
     )
     ap.add_argument(
-        "--ref_cmp_bed",
-        help="BED file to calculate relative mutation rate against other regions.",
-        default=None,
+        "--display_order",
+        help="Order by display_name. Only used if sample_opts provided.",
         type=str,
+        nargs="*",
     )
     ap.add_argument(
         "-o",
@@ -73,7 +71,13 @@ def main():
         fname, _ = os.path.splitext(os.path.basename(args.infile))
         outplot_prefix = os.path.join(dr, fname)
 
-    df = pl.read_csv(args.infile, has_header=True, separator="\t")
+    df = pl.read_csv(args.infile, has_header=True, separator="\t").unique()
+
+    if True:
+        # Remove primates.
+        df = df.filter(~pl.col("qry_sm").str.contains("^m"))
+
+    display_order = []
     if args.sample_opts:
         sample_opts = json.loads(args.sample_opts)
         samples, colors, display_names, shapes = [], [], [], []
@@ -89,41 +93,34 @@ def main():
             "shape": shapes,
         }
         df_sample_opts = pl.DataFrame(sample_opts)
+
         df = df.join(
             df_sample_opts, left_on="qry_sm", right_on="sample", how="left"
         ).with_columns(display_name=pl.col("display_name").fill_null(pl.col("qry_sm")))
+        if args.display_order:
+            df = df.join(
+                pl.DataFrame(
+                    {
+                        # Sort in reverse.
+                        "display_name": list(reversed(args.display_order)),
+                        "order": range(len(args.display_order)),
+                    }
+                ),
+                on="display_name",
+                how="left",
+            ).sort(by="order")
+            display_order = df["display_name"].unique(maintain_order=True).to_list()
     else:
         df = df.with_columns(
             color=pl.lit("gray"), display_name=pl.col("qry_sm"), shape=pl.lit("o")
         )
 
-    if args.ref_cmp_bed:
-        df_ref_mut = pl.read_csv(
-            args.ref_cmp_bed,
-            separator="\t",
-            has_header=False,
-            columns=[0, 1, 2],
-            new_columns=["chrom", "st", "end"],
-        )
-        itree_ref_mut = it.IntervalTree(
-            it.Interval(itv["st"], itv["end"])
-            for itv in df_ref_mut.iter_rows(named=True)
-        )
-    else:
-        itree_ref_mut = it.IntervalTree()
-
-    ref_muts = []
-    other_muts = []
-    for sm, df_sm in df.group_by(["qry_sm"], maintain_order=True):
-        sm = sm[0]
-        for st, end, mu in df_sm.select("ref_st", "ref_end", "mu").iter_rows():
-            if itree_ref_mut.overlaps(st, end):
-                ref_muts.append(mu)
-            else:
-                other_muts.append(mu)
+    # category should be str col of comma delimited values {ref, other, ignore}
+    ref_muts = df.filter(pl.col("category").str.contains("ref"))["mu"]
+    other_muts = df.filter(pl.col("category").str.contains("other"))["mu"]
 
     try:
-        tracks, settings = read_one_cen_tracks(args.toml_base)
+        tracks, settings = read_tracks(args.toml_base)
         chrom = next(iter(tracks.chroms))
         tracks = tracks.tracks
     except (ValueError, AttributeError) as err:
@@ -133,7 +130,9 @@ def main():
         settings = PlotSettings(title=chrom, dim=(18.0, 8.0))
 
     ax_mut_idx = max(0, len(tracks) - 1)
-    for i, df_part in enumerate(df.partition_by(["color", "display_name", "shape"])):
+    for i, df_part in enumerate(
+        df.partition_by(["color", "display_name", "shape"], maintain_order=True)
+    ):
         if i != 0:
             pos = TrackPosition.Overlap
             title = None
@@ -192,7 +191,17 @@ def main():
         n_unique = trk.data["name"].n_unique()
         # One element. Don't add.
         if n_unique == 1:
+            print(f"Skipping single track with element: {trk}", file=sys.stderr)
             continue
+
+        if trk.title == "Mutation rate\n(mutations per bp\nper generation)":
+            legend_label_order = (
+                trk.options.legend_label_order
+                if not display_order
+                else args.display_order
+            )
+        else:
+            legend_label_order = trk.options.legend_label_order
 
         legend_tracks.append(
             Track(
@@ -204,59 +213,50 @@ def main():
                 options=LegendTrackSettings(
                     index=curr_idx,
                     legend_ncols=10,
-                    legend_label_order=trk.options.legend_label_order,
+                    legend_label_order=legend_label_order,
                 ),
             )
         )
 
     tracks.extend(legend_tracks)
     # Create fig and axes
-    fig, axis, plots = plot_one_cen(
-        tracks=tracks, outdir="test", chrom=chrom, settings=settings
-    )
+    fig, axes, _ = plot_tracks(tracks=tracks, chrom=chrom, settings=settings)
     # Get axes.
     # Create secondary axis with shared x
-    ax_mut: matplotlib.axes.Axes = axis[ax_mut_idx, 0]
+    ax_mut: matplotlib.axes.Axes = axes[ax_mut_idx, 0]
     ax_mut_yaxis: matplotlib.axes.Axes = ax_mut.twinx()
-
-    # Delete temp plots.
-    for plot in plots:
-        os.remove(plot)
 
     # Log scale.
     ax_mut_yaxis.set_yscale("log")
-    ax_mut_yaxis.set_ylim(ax_mut.get_ylim())
 
     # Add lines
-    if ref_muts:
-        median_mut = statistics.median(ref_muts)
-        if median_mut == 0:
-            median_mut = statistics.mean(ref_muts)
-    else:
-        median_mut = 0.0
+    mean_mut = ref_muts.mean()
+    if not mean_mut:
+        mean_mut = sys.float_info.min
 
-    if other_muts:
-        other_mut = statistics.median(other_muts)
-        if other_mut == 0:
-            other_mut = statistics.mean(other_muts)
-    else:
+    other_mut = other_muts.mean()
+    if not other_mut or other_mut == 0.0:
         other_mut = 1.0
 
-    ax_mut.axhline(median_mut, linestyle="dotted", color="red")
+    assert isinstance(mean_mut, float) and isinstance(other_mut, float), (
+        "Invalid type for mutation rate."
+    )
+    ax_mut.axhline(mean_mut, linestyle="dotted", color="red")
     ax_mut.axhline(other_mut, linestyle="dotted", color="black")
 
     # Add median ticks.
     second_yticks, second_yticklabels = [], []
-    second_yticks.append(median_mut)
+    second_yticks.append(mean_mut)
     second_yticks.append(other_mut)
-    second_yticklabels.append(f"{median_mut:.2e}")
+    second_yticklabels.append(f"{mean_mut:.2e}")
     second_yticklabels.append(f"{other_mut:.2e}")
     ax_mut_yaxis.set_yticks(second_yticks, second_yticklabels)
     ax_mut_yaxis.get_yticklabels()[0].set_color("red")
+    # Reset ylim
+    ax_mut_yaxis.set_ylim(ax_mut.get_ylim())
 
-    rel_mut_rate = round(median_mut / other_mut)
-    print("\t".join(OUT_COLS), file=args.outfile)
-    print(f"{median_mut}\t{other_mut}\t{rel_mut_rate}", file=args.outfile)
+    rel_mut_rate = round(mean_mut / other_mut)
+    print(f"{mean_mut}\t{other_mut}\t{rel_mut_rate}", file=args.outfile)
 
     fig.savefig(f"{outplot_prefix}.png", bbox_inches="tight", dpi=600)
     fig.savefig(f"{outplot_prefix}.pdf", bbox_inches="tight", dpi=600)

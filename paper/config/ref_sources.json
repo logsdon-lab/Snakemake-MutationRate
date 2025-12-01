@@ -1,0 +1,7 @@
+{
+    "hor_arr": "/project/logsdon_shared/projects/HGSVC3/HGSVC_centromere_annotation/all_array_length.bed",
+    "rm": "/project/logsdon_shared/projects/HGSVC3/Snakemake-Repeat-Annotation/results/repeatmasker/repeats/{sm}/{chrom_coords}.fa.out",
+    "hor": "/project/logsdon_shared/projects/HGSVC3/Snakemake-Repeat-Annotation/results/humas_annot/{sm}_{chrom_coords}/stv_row.bed",
+    "cdr": "/project/logsdon_shared/projects/HGSVC3/HGSVC_centromere_annotation/all_cdrs_revised.bed",
+    "mdp": "/project/logsdon_shared/projects/HGSVC3/Snakemake-Repeat-Annotation/results/moddotplot/{sm}/{chrom_coords}/{chrom_coords}.bed"
+}

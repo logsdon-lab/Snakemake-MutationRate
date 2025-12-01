@@ -1,4 +1,4 @@
-SG_working
+*_working
 data
 .snakemake
 benchmarks*
@@ -7,3 +7,6 @@ results*
 temp
 exp
 png
+checkpoints
+*.tar.gz
+input
