@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-workflow:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: eWaterCycle/setup-apptainer@v2
+      with:
+        apptainer-version: 1.3.6
+    - name: snakemake
+      uses: snakemake/snakemake-github-action@v2.0.3
+      with:
+        directory: .
+        snakefile: Snakefile
+        args: "--configfile test/config/config_cen_var_glogsdon.yaml -c 4 -p --conda-cleanup-pkgs cache"

@@ -1,11 +1,20 @@
 # Mutation Rate Analysis
+
 Calculate mutation rate of query regions against a reference region.
-* See https://www.nature.com/articles/s41586-024-07278-3#Sec6.
 
 ![](docs/images/chr1@6.png)
 
+## Getting Started
+Clone the repo and setup Snakemake.
 ```bash
-git clone https://github.com/logsdon-lab/Snakemake-MutationRate.git --recurse-submodules
+git clone https://github.com/logsdon-lab/Snakemake-MutationRate.git --recursive
+cd Snakemake-MutationRate
+
+# Load or install apptainer
+# module load apptainer
+which apptainer
+conda env create --name smk-mut-rate -f env.yaml
+conda activate smk-mut-rate
 ```
 
 ## Configuration
@@ -52,15 +61,38 @@ samples:
     divergence_time: 0
 ```
 
+## Input
+The main inputs are:
+* Reference fasta (`reference.path`)
+* Reference BED coordinates (`reference.bed`)
+* Query fasta (`samples[n].path`)
+* Query BED coordinates (`samples[n].bed`)
+
+> [!NOTE]
+> Should include chromosome and haplotype information in fasta names to filter alignments with `config.regex_*`.
+> ex. `HG00096_chr1_haplotype1-00000X`
+
+## Output
+The main output files have the following prefix: `results/{clade}/mutation_rate/{contig_name}/{clade}`
+
+|file|desc|
+|-|-|
+|`{clade}_annot.bedpe`|BEDPE-like file with paired intervals and their mutation rate. Includes header with columns: `ref_chrom,ref_st,ref_end,mu,qry_chrom,qry_st,qry_end,ref_sm,qry_sm,category` |
+|`{clade}_mut.tsv`|TSV file with summary of mutation rates with format: `ref_chrom,clade,cmp_mutation_rate,non_cmp_mutation-rate,fold_mutation_rate,`|
+|`{clade}.pdf`|PDF of mutation rate plot.|
+|`{clade}.png`|PNG of mutation rate plot.|
+
 ## Usage
 ```bash
-# Load singularity or install it.
-which singularity
+snakemake -p --configfile config/config.yaml -j 40
+```
 
-conda env create --name mut_rate -f env.yaml
-conda activate mut_rate
-
+## Test
+```bash
 # Rerun mutation rate estimation.
 # https://www.nature.com/articles/s41586-024-07278-3#Sec6
-snakemake -p --configfile test/config/config_cen_var_glogsdon.yaml -j 40 -n
+snakemake -p --configfile test/config/config_cen_var_glogsdon.yaml -c 40 -n
 ```
+
+## Sources
+* https://www.nature.com/articles/s41586-024-07278-3#Sec6.
