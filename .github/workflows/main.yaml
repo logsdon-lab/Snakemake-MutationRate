@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: 'recursive'
     - uses: eWaterCycle/setup-apptainer@v2
       with:
         apptainer-version: 1.3.6

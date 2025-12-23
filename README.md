@@ -1,10 +1,11 @@
 # Mutation Rate Analysis
+[![CI](https://github.com/logsdon-lab/Snakemake-MutationRate/actions/workflows/main.yaml/badge.svg)](https://github.com/logsdon-lab/Snakemake-MutationRate/actions/workflows/main.yaml)
 
 Calculate mutation rate of query regions against a reference region.
 
 ![](docs/images/chr1@6.png)
 
-> HGSVC (HG03520 H1 (Reference) and 16 similar HGSVC haplotypes; see `paper/data/all_query.bed`) chr1 centromere clade (`chr1@6`) mutation rate plot with satellite structure, local self sequence identity, and mutation rate.
+> HGSVC chr1 centromere clade, `chr1@6`, (HG03520 H1 and 16 similar HGSVC haplotypes; see `paper/data/all_query.bed`) mutation rate plot with satellite structure, local self sequence identity, and mutation rate.
 
 ## Getting Started
 Clone the repo and setup Snakemake and other requirements.
