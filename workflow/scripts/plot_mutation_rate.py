@@ -73,10 +73,6 @@ def main():
 
     df = pl.read_csv(args.infile, has_header=True, separator="\t").unique()
 
-    if True:
-        # Remove primates.
-        df = df.filter(~pl.col("qry_sm").str.contains("^m"))
-
     display_order = []
     if args.sample_opts:
         sample_opts = json.loads(args.sample_opts)

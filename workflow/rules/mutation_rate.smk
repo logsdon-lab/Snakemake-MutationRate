@@ -54,7 +54,7 @@ rule annotate_mutation_rates:
         "../envs/tools.yaml"
     params:
         ref_cmp_bed=lambda wc, input: (
-            f"{input.ref_cmp_bed}" if input.ref_cmp_bed else "<(echo '')"
+            f"{input.ref_cmp_bed}" if input.ref_cmp_bed else ""
         ),
         other_ign_bed=lambda wc, input: (
             f"{input.other_ign_bed}" if input.other_ign_bed else "<(echo '')"
@@ -65,6 +65,11 @@ rule annotate_mutation_rates:
         """
         # Add header
         head -n1 {input.mut_bedpe} | awk -v OFS="\\t" '{{ print $0, "category"}}' > {output.mut_bedpe}
+        # No reference compare bed.
+        if [ -z "{params.ref_cmp_bed}" ]; then
+            awk -v OFS="\\t" 'NR > 1 {{ print $0, "ref" }}' {input.mut_bedpe} >> {output.mut_bedpe}
+            exit 0
+        fi
         # Intersect with headerless BEDPE and add overlap category (reference/ignore), if any.
         # No overlap is other.
         # Then merge the results into a 10th comma-delimited column.

@@ -1,23 +1,8 @@
 
-rule compile_tn93:
-    input:
-        src="workflow/scripts/libtn93/python",
-    output:
-        touch(join(OUTPUT_DIR, "divergence", "compiled_tn93.done")),
-    conda:
-        "../envs/tools.yaml"
-    log:
-        join(LOGS_DIR, "compile_tn93.log"),
-    shell:
-        """
-        {{ pip install {input.src} || true ;}}  &> {log}
-        """
-
 
 rule split_msa_into_pairs:
     input:
         script="workflow/scripts/split_msa_into_pairs.py",
-        libtn93_chkpt=rules.compile_tn93.output,
         fa_msa=rules.msa.output,
     output:
         # Outputs "{p1}+{p2}.fa"

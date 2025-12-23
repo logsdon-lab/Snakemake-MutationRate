@@ -4,8 +4,10 @@ Calculate mutation rate of query regions against a reference region.
 
 ![](docs/images/chr1@6.png)
 
+> HGSVC (HG03520 H1 (Reference) and 16 similar HGSVC haplotypes; see `paper/data/all_query.bed`) chr1 centromere clade (`chr1@6`) mutation rate plot with satellite structure, local self sequence identity, and mutation rate.
+
 ## Getting Started
-Clone the repo and setup Snakemake.
+Clone the repo and setup Snakemake and other requirements.
 ```bash
 git clone https://github.com/logsdon-lab/Snakemake-MutationRate.git --recursive
 cd Snakemake-MutationRate
@@ -59,6 +61,10 @@ samples:
     mm2_opts: -x asm20 --secondary=no -K 8G -t 8
     # Assumed divergence time from reference.
     divergence_time: 0
+    # Shape of alignment datapoint.
+    shape: 'o'
+    # Color of alignment datapoint as hexcode or color name.
+    color: "red"
 ```
 
 ## Input
@@ -88,11 +94,25 @@ snakemake -p --configfile config/config.yaml -j 40
 ```
 
 ## Test
+Mutation rate of CHM13 chr5 to CHM1 and Chimpanzee.
+```bash
+snakemake -p --configfile test/config/config_cen_var_glogsdon_small.yaml -c 4 -n
+```
+
+![](docs/images/chm13_chr5.png)
+
+Mutation rate of CHM13 chr5 + chrX to CHM1, HG00733, Chimpanzee, Oranguatan, and Macaque.
 ```bash
 # Rerun mutation rate estimation.
 # https://www.nature.com/articles/s41586-024-07278-3#Sec6
-snakemake -p --configfile test/config/config_cen_var_glogsdon.yaml -c 40 -n
+# Recommend using cluster.
+snakemake -p --configfile test/config/config_cen_var_glogsdon.yaml -j 40 -n --workflow-profile workflow/profiles/lpc
 ```
+
+> WIP
 
 ## Sources
 * https://www.nature.com/articles/s41586-024-07278-3#Sec6.
+
+## Cite
+**Gao S, Oshima KK**, Chuang SC, Loftus M, Montanari A, Gordon DS, Human Genome Structural Variation Consortium, Human Pangenome Reference Consortium, Hsieh P, Konkel MK, Ventura M, Logsdon GA. A global view of human centromere variation and evolution. bioRxiv. 2025. p. 2025.12.09.693231. [doi:10.64898/2025.12.09.693231](https://doi.org/10.64898/2025.12.09.693231)

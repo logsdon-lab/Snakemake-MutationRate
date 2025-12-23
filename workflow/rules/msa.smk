@@ -95,7 +95,7 @@ rule msa:
         fa=join(OUTPUT_DIR, "msa", "{ref}", "{window}.fa"),
     conda:
         "../envs/tools.yaml"
-    threads: 4
+    threads: config.get("threads_msa", 4)
     resources:
         mem="60GB",
     log:
