@@ -9,4 +9,4 @@ exp
 png
 checkpoints
 *.tar.gz
-input
+__pycache__

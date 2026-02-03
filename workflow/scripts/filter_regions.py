@@ -71,6 +71,7 @@ def main():
         df.filter(
             (pl.col("rchrom") == rchrom) & pl.col("length").is_between(*args.length)
         )
+        # TODO: Look into how unassigned handled.
         .filter((pl.col("chrom").count() <= 1).over(["species", "hap", "rchrom"]))
         .select("chrom")
         .write_csv(args.output, include_header=False)

@@ -19,12 +19,24 @@ OUT_COLS = [
 REF_SM_DIV_TIMES_COLS = ["ref_chrom", "qry_chrom", "repl_time"]
 
 
+def ne_factor() -> pl.Expr:
+    return (
+        pl.when(pl.col("ref_chrom").eq(pl.lit("chrX")))
+        .then(pl.lit(3))
+        .when(pl.col("ref_chrom").eq(pl.lit("chrY")))
+        .then(pl.lit(1))
+        .otherwise(pl.lit(4))
+    )
+
+
 def compute_mu_div(col_tn93_div: str, col_div_time: str, Ne: int, gen: int) -> pl.Expr:
-    return pl.col(col_tn93_div) / (2 * (pl.col(col_div_time) / gen) + 4 * Ne)
+    return pl.col(col_tn93_div) / (
+        2 * (pl.col(col_div_time) / gen) + (ne_factor() * Ne)
+    )
 
 
 def compute_mu_poly(col_tn93_div: str, Ne: int) -> pl.Expr:
-    return pl.col(col_tn93_div) / pl.lit(4 * Ne)
+    return pl.col(col_tn93_div) / (ne_factor() * pl.lit(Ne))
 
 
 def main():
@@ -125,7 +137,8 @@ def main():
         )
 
     df = (
-        df.with_columns(
+        df.lazy()
+        .with_columns(
             mu=pl.when(pl.col("qry_sm_divergence_time") == 0)
             .then(compute_mu_poly("tn93_div", Ne=Ne))
             .otherwise(
@@ -134,6 +147,8 @@ def main():
         )
         .select(OUT_COLS)
         .unique()
+        .sort(by=["ref_chrom", "ref_st"])
+        .collect()
     )
 
     df.write_csv(args.outfile, separator="\t", include_header=True)
