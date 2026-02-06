@@ -20,19 +20,25 @@ REF_SM_DIV_TIMES_COLS = ["ref_chrom", "qry_chrom", "repl_time"]
 
 
 def ne_factor() -> pl.Expr:
+    # Based on https://pubmed.ncbi.nlm.nih.gov/11355571/
+    # Effect of autosomes vs sex chromosomes
     return (
-        pl.when(pl.col("ref_chrom").eq(pl.lit("chrX")))
+        pl.when(pl.col("ref_chrom").str.contains("chrX"))
         .then(pl.lit(3))
-        .when(pl.col("ref_chrom").eq(pl.lit("chrY")))
+        .when(pl.col("ref_chrom").str.contains("chrY"))
         .then(pl.lit(1))
         .otherwise(pl.lit(4))
     )
 
 
-def compute_mu_div(col_tn93_div: str, col_div_time: str, Ne: int, gen: int) -> pl.Expr:
-    return pl.col(col_tn93_div) / (
-        2 * (pl.col(col_div_time) / gen) + (ne_factor() * Ne)
-    )
+def compute_mu_div(
+    col_tn93_div: str, col_div_time: str, Ne: int, gen: int, ne_f: float | None = None
+) -> pl.Expr:
+    if not ne_f:
+        ne_f = ne_factor()
+
+    expr = pl.col(col_tn93_div) / (2 * (pl.col(col_div_time) / gen) + (ne_f * Ne))
+    return expr
 
 
 def compute_mu_poly(col_tn93_div: str, Ne: int) -> pl.Expr:

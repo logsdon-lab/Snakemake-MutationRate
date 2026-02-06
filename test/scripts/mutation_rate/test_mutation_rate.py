@@ -18,7 +18,7 @@ EXPECTED_DIR = f"test/scripts/{CMD}/expected"
             os.path.join(INPUT_DIR, f"{clade}_divergence.json"),
             os.path.join(EXPECTED_DIR, f"{clade}.bedpe.gz"),
         )
-        for clade in ("chr8@9", "chrX@8", "chrY@2")
+        for clade in ("chr8@9", "chrX@8", "chrY@2", "chrY@2_change_chr")
     ]
 )
 def test_mutation_rate(divergence, divergence_times, expected):
@@ -26,5 +26,5 @@ def test_mutation_rate(divergence, divergence_times, expected):
     run_integration_test(
         *cmd,
         expected_output=expected,
-        overwrite_output=True
+        overwrite_output=False
     )
