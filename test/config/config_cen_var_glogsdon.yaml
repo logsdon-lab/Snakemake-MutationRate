@@ -11,8 +11,8 @@ reference:
     - test/bed/chm13_chrX.bed
 
 length_range: [5000, 11000]
-regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
-regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
+regex_sm_hap: "(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)"
+regex_sm_chrom: "_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]"
 regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"
 samples:
   - name: hg00733
