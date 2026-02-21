@@ -59,7 +59,7 @@ rule filter_regions:
         window_bed_record=lambda wc: get_window_bed_record(wc.window),
         rgx_hap=config["regex_sm_hap"],
         rgx_chrom=config["regex_sm_chrom"],
-        rgx_species=r"'(.*?)~'",
+        rgx_species=r"(.*?)~",
         length_range=f"'{tuple(config["length_range"])}'",
     conda:
         "../envs/tools.yaml"
@@ -70,7 +70,7 @@ rule filter_regions:
         {{ samtools faidx {input.fa} || true ;}} &> /dev/null
         # Subset and filter regions so only unique mappings.
         seqtk subseq {input.fa} \
-            <(python {input.script} -i {output.fai} --rgx_hap {params.rgx_hap} --rgx_chrom {params.rgx_chrom} --rgx_species {params.rgx_species} -c {params.chrom} -l {params.length_range}) > {output.filtered_fa} 2> {log}
+            <(python {input.script} -i {output.fai} --rgx_hap '{params.rgx_hap}' --rgx_chrom '{params.rgx_chrom}' --rgx_species '{params.rgx_species}' -c {params.chrom} -l {params.length_range}) > {output.filtered_fa} 2> {log}
         # Add reference back.
         seqtk subseq {input.ref_fa} <(printf "{params.window_bed_record}") | \
             awk '{{

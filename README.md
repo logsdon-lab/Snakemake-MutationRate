@@ -47,8 +47,8 @@ reference:
     plot_format: annotation.toml
 # Regular expression patterns within fasta headers to find haplotype and matching chromosome.
 # Used to group and filter alignments by exact match.
-regex_sm_hap: "'(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)'"
-regex_sm_chrom: "'_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]'"
+regex_sm_hap: "(mat|pat|haplotype1|haplotype2|hap1|hap2|h1|h2)"
+regex_sm_chrom: "_(hsa(.*?)|chr(.*?)|cen(.*?))[:_]"
 regex_ref_chrom: "(?:chr|hsa|cen)([0-9XY]{1,2})"
 # Samples to align against each reference.
 samples:
